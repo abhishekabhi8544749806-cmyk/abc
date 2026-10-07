@@ -34,12 +34,27 @@
   .bar div { width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; }
   .bar span { font-size: 11px; color: var(--muted); }
   table { width: 100%; border-collapse: collapse; }
+  nav { background: var(--card); border-bottom: 1px solid var(--border); }
+  nav .inner { max-width: 960px; margin: 0 auto; padding: 0 16px; height: 52px;
+               display: flex; align-items: center; gap: 20px; overflow-x: auto; }
+  nav .brand { font-weight: 700; margin-right: auto; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--accent); }
   td { padding: 6px 0; border-bottom: 1px solid var(--border); }
   td:last-child { text-align: right; color: var(--muted); }
   tr:last-child td { border-bottom: 0; }
 </style>
 </head>
 <body>
+<nav>
+  <div class="inner">
+    <span class="brand">ABC</span>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Users</a>
+    <a href="#">Orders</a>
+    <a href="#">Settings</a>
+  </div>
+</nav>
 <main>
   <h1>ABC Dashboard</h1>
 
@@ -64,6 +79,10 @@
     { label: "Orders",  value: "312",   delta: +1.8 },
     { label: "Revenue", value: "$8.4k", delta: -2.1 },
     { label: "Tickets", value: "17",    delta: -12.5 },
+    { label: "Active now",      value: "86",    delta: +6.0 },
+    { label: "New signups",     value: "54",    delta: +9.3 },
+    { label: "Avg order value", value: "$27",   delta: -0.8 },
+    { label: "Conversion",      value: "3.4%",  delta: +0.5 },
   ];
   const weekly = { Mon: 42, Tue: 58, Wed: 35, Thu: 71, Fri: 64, Sat: 28, Sun: 22 };
   const recent = [
