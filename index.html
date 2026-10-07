@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABC Dashboard</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #6b7280;
+    --border: #e5e7eb; --accent: #3b6fd8; --good: #15803d; --bad: #b91c1c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --card: #1b2029; --text: #e6e8ec; --muted: #9aa3b2;
+      --border: #2a313d; --accent: #6b9bf2; --good: #4ade80; --bad: #f87171;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 20px; margin: 0 0 16px; }
+  h2 { font-size: 14px; margin: 0 0 12px; color: var(--muted); font-weight: 600; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .label { color: var(--muted); font-size: 12px; }
+  .value { font-size: 24px; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .delta { font-size: 12px; }
+  .up { color: var(--good); } .down { color: var(--bad); }
+  .row { display: grid; gap: 12px; grid-template-columns: 2fr 1fr; margin-top: 12px; }
+  @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 160px; }
+  .bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+  .bar div { width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; }
+  .bar span { font-size: 11px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 6px 0; border-bottom: 1px solid var(--border); }
+  td:last-child { text-align: right; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ABC Dashboard</h1>
+
+  <section class="grid" id="stats"></section>
+
+  <section class="row">
+    <div class="card">
+      <h2>Weekly activity</h2>
+      <div class="bars" id="chart"></div>
+    </div>
+    <div class="card">
+      <h2>Recent</h2>
+      <table id="recent"></table>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Sample data: replace with your own.
+  const stats = [
+    { label: "Users",   value: "1,248", delta: +4.2 },
+    { label: "Orders",  value: "312",   delta: +1.8 },
+    { label: "Revenue", value: "$8.4k", delta: -2.1 },
+    { label: "Tickets", value: "17",    delta: -12.5 },
+  ];
+  const weekly = { Mon: 42, Tue: 58, Wed: 35, Thu: 71, Fri: 64, Sat: 28, Sun: 22 };
+  const recent = [
+    ["New user signed up", "2m ago"],
+    ["Order #1042 placed", "15m ago"],
+    ["Ticket #88 closed", "1h ago"],
+    ["Payment received", "3h ago"],
+  ];
+
+  document.getElementById("stats").innerHTML = stats.map(s => `
+    <div class="card">
+      <div class="label">${s.label}</div>
+      <div class="value">${s.value}</div>
+      <div class="delta ${s.delta >= 0 ? "up" : "down"}">${s.delta >= 0 ? "▲" : "▼"} ${Math.abs(s.delta)}%</div>
+    </div>`).join("");
+
+  const max = Math.max(...Object.values(weekly));
+  document.getElementById("chart").innerHTML = Object.entries(weekly).map(([d, v]) => `
+    <div class="bar" title="${d}: ${v}">
+      <div style="height:${(v / max) * 85}%"></div>
+      <span>${d}</span>
+    </div>`).join("");
+
+  document.getElementById("recent").innerHTML = recent
+    .map(([t, w]) => `<tr><td>${t}</td><td>${w}</td></tr>`).join("");
+</script>
+</body>
+</html>
